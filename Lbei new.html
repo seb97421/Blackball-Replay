@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+    <title>Blackball Replay</title>
+
+    <!-- Installation PWA -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#080e18">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Blackball Replay">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="app-header">
+    <div class="brand">
+        <div class="brand-icon">8</div>
+        <div>
+            <h1>BLACKBALL <span>REPLAY</span></h1>
+            <p>POOL ANALYSIS STUDIO</p>
+        </div>
+    </div>
+
+    <div class="status">
+        <span class="status-dot"></span>
+        ANALYSE ACTIVE
+    </div>
+</header>
+
+<main class="app-layout">
+
+    <section class="table-section">
+
+        <div class="section-heading">
+            <div>
+                <span class="eyebrow">ESPACE DE JEU</span>
+                <h2>Table de billard</h2>
+                <p>Déplace les billes et règle ton point d'impact.</p>
+            </div>
+
+            <button id="resetBtn" class="secondary-button">
+                ↺ Réinitialiser
+            </button>
+        </div>
+
+        <div class="table-container">
+            <svg id="table" viewBox="0 0 1000 550">
+                <defs>
+                    <radialGradient id="cloth">
+                        <stop offset="0%" stop-color="#1475a5"/>
+                        <stop offset="100%" stop-color="#06446d"/>
+                    </radialGradient>
+                </defs>
+
+                <rect x="10" y="10" width="980" height="530"
+                      rx="35" fill="#382319"/>
+
+                <rect x="35" y="35" width="930" height="480"
+                      rx="25" fill="#111"/>
+
+                <rect x="55" y="55" width="890" height="440"
+                      rx="12" fill="url(#cloth)"
+                      stroke="#bd965c" stroke-width="5"/>
+
+                <g fill="#080808">
+                    <circle cx="55" cy="55" r="25"/>
+                    <circle cx="500" cy="55" r="22"/>
+                    <circle cx="945" cy="55" r="25"/>
+                    <circle cx="55" cy="495" r="25"/>
+                    <circle cx="500" cy="495" r="22"/>
+                    <circle cx="945" cy="495" r="25"/>
+                </g>
+
+                <g fill="#d5c39b">
+                    <circle cx="278" cy="35" r="3"/>
+                    <circle cx="500" cy="35" r="3"/>
+                    <circle cx="722" cy="35" r="3"/>
+                    <circle cx="278" cy="515" r="3"/>
+                    <circle cx="500" cy="515" r="3"/>
+                    <circle cx="722" cy="515" r="3"/>
+                </g>
+
+                <g id="trajectoryLayer"></g>
+                <g id="ballsLayer"></g>
+                <g id="aimLayer"></g>
+            </svg>
+        </div>
+
+        <div class="legend">
+            <span><i class="white"></i> Blanche</span>
+            <span><i class="red"></i> Bille cible</span>
+            <span><i class="yellow"></i> Blanche après choc</span>
+            <span><i class="green"></i> Tangente</span>
+        </div>
+
+    </section>
+
+    <aside class="panel">
+
+        <div class="panel-heading">
+            <span class="eyebrow">OUTILS</span>
+            <h2>Analyse du coup</h2>
+        </div>
+
+        <div class="info-card">
+            <span>TYPE DE CONTACT</span>
+            <strong id="contactType">En attente</strong>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <span>RECOUVREMENT</span>
+                <strong id="overlap">-- %</strong>
+            </div>
+
+            <div class="info-card">
+                <span>POINT D'IMPACT</span>
+                <strong id="impactInfo">À définir</strong>
+            </div>
+        </div>
+
+        <div class="panel-divider"></div>
+
+        <h3>Effets de la blanche</h3>
+
+        <div class="effect-buttons">
+            <button class="effect active" data-effect="centre">Centre</button>
+            <button class="effect" data-effect="retro">Rétro</button>
+            <button class="effect" data-effect="coule">Coulé</button>
+            <button class="effect" data-effect="gauche">Gauche</button>
+            <button class="effect" data-effect="droite">Droite</button>
+        </div>
+
+        <div class="spin-area">
+            <div class="spin-ball" id="spinBall">
+                <div class="spin-point" id="spinPoint"></div>
+            </div>
+            <p>Déplace le point pour choisir ton effet</p>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <span>EFFET VERTICAL</span>
+                <strong id="verticalValue">Neutre</strong>
+            </div>
+
+            <div class="info-card">
+                <span>EFFET LATÉRAL</span>
+                <strong id="sideValue">Neutre</strong>
+            </div>
+        </div>
+
+        <button id="showLines" class="main-button">
+            Afficher / masquer les trajectoires
+        </button>
+
+    </aside>
+
+</main>
+
+<footer>
+    BLACKBALL REPLAY <span>•</span> POOL ANALYSIS STUDIO
+</footer>
+
+<script src="Java.js"></script>
+
+<script>
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js")
+            .catch(error => console.error("Service Worker :", error));
+    });
+}
+</script>
+
+</body>
+</html>
